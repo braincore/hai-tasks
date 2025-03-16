@@ -1,0 +1,26 @@
+name = "hai/account-update"
+version = "1.0.0"
+
+description = "Update details in your hai account."
+
+steps = [
+    """/pin There are two routes for account configuration.
+
+    API format:
+    - Make an HTTP POST request to https://hai.superego.ai/1/account/{ROUTE}
+    - Specify the bearer token as an Authorization:"Bearer {TOKEN}" header. 
+    - Use curl (silent mode) to make requests.
+
+    ROUTE: set_name
+    Takes a JSON body with one key:
+        - name (String or null): null will clear the name.
+
+    ROUTE: set_bio
+    Takes a JSON body with one key:
+        - bio (String or null): null will clear the bio.
+    """,
+    "/set-mask-secrets on",
+    "/ask-human(secret=true, cache=true) What's your API token?",
+    "!sh",
+    "/pin You may now tell the AI how you would like to update your account.",
+]
