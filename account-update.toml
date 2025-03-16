@@ -1,5 +1,5 @@
 name = "hai/account-update"
-version = "1.0.0"
+version = "1.1.0"
 
 description = "Update details in your hai account."
 
@@ -20,7 +20,8 @@ steps = [
         - bio (String or null): null will clear the bio.
     """,
     "/set-mask-secrets on",
+    "/pin If you need an API token, use `/task hai/get-api-token`",
     "/ask-human(secret=true, cache=true) What's your API token?",
     "!sh",
-    "/pin You may now tell the AI how you would like to update your account.",
+    "/pin How would you like to update your account? (set name? set bio?)",
 ]
