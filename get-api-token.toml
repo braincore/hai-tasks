@@ -1,0 +1,24 @@
+name = "hai/get-api-token"
+version = "1.0.0"
+
+description = "Get an API token for Hai."
+
+steps = [
+    """/pin Get an API token for Hai.
+    Make an HTTP POST request to https://hai.superego.ai/1/account/token_from_login
+    - It takes a JSON body with two keys: username and password.
+    - Use curl to make the request SILENTLY.
+    - Use jq to extract the `token` field from the JSON response. Fallback to
+      printing the full response if `token` isn't present. Use something like
+      `jq -r 'if has("token") then .token else . end'`
+    - If `token` extracted successfully, print out a message that looks as
+      follows:
+
+      This is your hai token: {TOKEN}
+      Use this token with tasks such as `/task hai/account-update` 
+    """,
+    "/set-mask-secrets on",
+    "/ask-human(cache=true) What's your username?",
+    "/ask-human(secret=true, cache=true) What's your password?",
+    "!shscript Get my hai API token"
+]
