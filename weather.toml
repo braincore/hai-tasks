@@ -1,0 +1,50 @@
+name = "ken/weather"
+version = "1.0.0"
+
+description = "Get the weather from the National Weather Service (weather.gov)"
+
+steps = [
+    """/pin Query the National Weather Service API for weather reports
+
+    ### Key Features of the NWS API:
+    1. **Weather Forecasts**: Access detailed weather forecasts for specific locations.
+    2. **Current Conditions**: Retrieve real-time weather observations.
+    3. **Weather Alerts**: Get severe weather alerts and warnings.
+    4. **Grid Data**: Access forecast data in a grid format for specific regions.
+    5. **Hourly Forecasts**: Retrieve hourly weather predictions.
+    6. **Marine and Aviation Data**: Specialized data for marine and aviation purposes.
+    
+    ### Base URL:
+    The base URL for the NWS API is:
+    ```
+    https://api.weather.gov/
+    ```
+    
+    ### Example Endpoints:
+    - **Hourly Forecast**:
+      ```
+      https://api.weather.gov/gridpoints/{office}/{gridX},{gridY}/forecast/hourly
+      ```
+
+    ### Provide Hourly Forecast
+    - No matter the day requested, give an hour-by-hour forecast.
+    - The `points` API will return another URL for the hourly forecast.
+    - Query that URL and parse that response for the actual data.
+
+    ### Parsing JSON Response 
+    - If using the shell, use `jq` to filter response JSON.
+    - If using Python or any other program, print forecast to stdout.
+    - Print output as a TABLE
+    - Pretty-print the ISO8601 date time so that it's "Month/Day Hour" (e.g. 3/14 2pm).
+    - Output temperature, humidity, precipitation.
+    - Round dewpoint to 2 sig figs.
+
+    ### Unknown data
+    - Ask user to `/load-url https://api.weather.gov/openapi.json` for the full
+      API spec. Or, you can do it if it's a !hai tool.
+    """,
+    "/ask-human(cache=true) What's your default city?",
+    "/ask-human(cache=true) Celsius or fahrenheit?",
+    "/pin NOTE: This task works much better with sonnet3.7 than gpt-4o",
+    "!py",
+]
