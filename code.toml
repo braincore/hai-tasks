@@ -1,0 +1,30 @@
+name = "hai/code"
+version = "1.0.0"
+
+description = "Review the hai cli source code"
+
+steps = [
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/Cargo.toml",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/README.md",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/asset_editor.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/chat.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/clipboard.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/cmd.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/config.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/ctrlc_handler.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/db.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/line_editor.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/loader.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/main.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/term.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/tool.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/api/client.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/ai_provider/anthropic.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/ai_provider/ollama.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/ai_provider/openai.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/ai_provider/tool_schema.rs",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/src/ai_provider/util.rs",
+    "/pin Ask anything about the `hai` cli source code and the AI will answer.",
+    "/pin BEWARE: Queries are expensive given the large amounts of context.",
+    "/cost",
+]
