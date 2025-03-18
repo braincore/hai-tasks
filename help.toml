@@ -1,0 +1,11 @@
+name = "hai/help"
+version = "1.0.0"
+
+description = "Get help for the hai CLI."
+
+steps = [
+    "/help(history=true)",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/README.md",
+    """/pin Ask `hai` usage questions and the AI will answer. It's equipped with
+    knowledge from /help and the project README.""",
+]
