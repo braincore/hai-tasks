@@ -1,0 +1,50 @@
+name = "hai/api"
+version = "1.0.0"
+
+description = "Query the hai api"
+
+steps = [
+    "/pin hai's API routes are defined in the Stone IDL:",
+
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/api_spec/account.stone",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/api_spec/asset.stone",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/api_spec/common.stone",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/api_spec/stone_cfg.stone",
+    "/load-url https://raw.githubusercontent.com/braincore/hai-cli/refs/heads/master/api_spec/task.stone",
+
+    "/pin The following document explains how objects in stone map to JSON:",
+    "/load-url https://raw.githubusercontent.com/dropbox/stone/refs/heads/main/docs/json_serializer.rst",
+
+    "/pin Checking if httpie is available. If so, use it. Otherwise, fallback to curl.",
+    "/exec(cache=true) http",
+
+    """/pin API Usage:
+    - ALL requests must use HTTP Method POST.
+    - JSON arguments are encoded in the request body.
+    - Set `Content-Type: application/json` header.
+    - Routes map to urls like so: https://hai.superego.ai/1/{ROUTE_NAME}
+    - If using `curl` to make requests, format response with `jq`.
+    - If using `http` to make requests, pretty print response with flag `--pretty=all`
+    - Routes specified as `auth="user"` need an Authorization header:
+        Authorization:"Bearer {TOKEN}" 
+    - Routes specified as `auth="noauth"` do not need an Authorization header.
+    - Routes specified as `auth="user_optional"` can be treated as user-auth or noauth.
+
+    More notes on JSON handling:
+    - ALL arg, result, and errors are JSON.
+    - When an arg is Void, the JSON body must be set to `null`.
+    - When a result is Void, the JSON response will be `null`.
+    - `Timestamp` is encoded as a ISO8601 string in UTC.
+    """,
+
+    "/set-mask-secrets on",
+    "/pin If you need an API token, use `/task hai/get-api-token`",
+    "/ask-human(secret=true, cache=true) What's your API token?",
+
+    "!sh",
+
+    "/pin BEWARE: Queries are somewhat expensive given the large amounts of API context.",
+    "/cost",
+
+    "/pin Ready to make API queries. What would you like to do?",
+]
