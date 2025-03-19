@@ -1,0 +1,16 @@
+name = "hai/give-feedback"
+version = "1.0.0"
+
+description = "Give feedback to hai."
+
+steps = [
+    """/pin This task is for the one-way collection of feedback for hai.
+
+    When the user writes their feedback, you should use:
+
+    `/asset-push /hai/feedback` followed by a newline and their feedback
+    verbatim.
+    """,
+    "!hai",
+    "/pin What's your feedback for the hai team?",
+]
