@@ -1,7 +1,7 @@
 name = "ken/pelican-bicycle"
-version = "1.0.0"
+version = "2.0.0"
 
-description = "Runs simonw's \"Pelicans on a bicycle\" test"
+description = "simonw's \"Pelicans on a bicycle\" test"
 
 steps = [
     """/pin The test is simple: Ask an AI to draw a pelican on a bicycle.
@@ -17,8 +17,7 @@ steps = [
     "/pin Checking what image tools you have",
     "/exec cairosvg --version",
     "/exec convert -version",
-    "/prompt Generate an SVG of a pelican riding a bicycle",
-    "!shscript Use `cairosvg` or `convert` to generate a png from the above svg named `pelican-bicycle.png`",
+    "!shscript Generate an SVG of a pelican riding a bicycle and pipe it into `cairosvg` or `convert` and output a png named `pelican-bicycle.png`",
     "/load pelican-bicycle.png",
     "/prompt Describe this image in one sentence.",
 ]
