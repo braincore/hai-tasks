@@ -1,0 +1,24 @@
+name = "ken/pelican-bicycle"
+version = "1.0.0"
+
+description = "Runs simonw's \"Pelicans on a bicycle\" test"
+
+steps = [
+    """/pin The test is simple: Ask an AI to draw a pelican on a bicycle.
+
+    https://github.com/simonw/pelican-bicycle
+
+    This task includes the multimodal twist:
+
+    https://drewbot.notion.site/Multimodal-Pelican-On-a-Bicycle-Benchmark-1b60afc9273f80d0b0f6ce8c1eafbe57
+
+    Beware: The AI knows what it was asked to generate so it's primed.
+    """,
+    "/pin Checking what image tools you have",
+    "/exec cairosvg --version",
+    "/exec convert -version",
+    "/prompt Generate an SVG of a pelican riding a bicycle",
+    "!shscript Use `cairosvg` or `convert` to generate a png from the above svg named `pelican-bicycle.png`",
+    "/load pelican-bicycle.png",
+    "/prompt Describe this image in one sentence.",
+]
