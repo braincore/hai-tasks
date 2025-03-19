@@ -1,0 +1,32 @@
+name = "ken/hn-summary"
+version = "1.0.0"
+
+description = "Summarize Hacker News discussion"
+
+steps = [
+    """/pin Given a Hacker News item_id or link, fetches comments using the
+    Algolia API and summarizes them.
+
+    Prompt taken from: https://github.com/samayethali/hacker-news-summary
+    """,
+    "/ask-human HN link or item id?",
+    "!hai One /load-url command to fetch comments: `/load-url https://hn.algolia.com/api/v1/items/{ITEM_ID}`",
+    """/prompt Please summarize the key themes and notable opinions from this Hacker News discussion.
+
+    Key requirements:
+    - Focus on identifying and quoting the most insightful and well-received comments
+    - Use direct "quotations" extensively, always with author attribution
+    - Group related comments and perspectives under thematic markdown headers
+    - Fix any HTML entities in the comments
+    - Output in markdown format
+    - Prioritize depth over brevity - include interesting nuances and dissenting views
+    - For each major point, include 2-3 relevant quotes that showcase the discussion
+    
+    Remember to:
+    - Use H2 (##) for main themes
+    - Use H3 (###) for subthemes or related perspectives
+    - Always wrap quotes in double quotation marks with author attribution
+    - Preserve the exact wording from comments when quoting
+    """,
+    "/cost",
+]
