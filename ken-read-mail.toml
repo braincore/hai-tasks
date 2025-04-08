@@ -1,0 +1,25 @@
+name = "ken/read-mail"
+version = "1.0.0"
+
+description = "Read my mail."
+
+steps = [
+    """/pin This task lets you read your mail.
+
+    Messages are ENCRYPTED, and must be DECRYPTED using an ENCRYPTED RSA
+    private key:
+    """,
+    "/asset-view priv_key/ken_private_rsa.pem",
+    "/asset-revisions /ken/inbox",
+    """/pin When prompted, decrypt the private key (prompt user for password),
+    and then decrypt the message in one go. DO NOT print the decrypted private
+    key to the screen. DO NOT use the PRIVATE KEY via file path. You'll need to
+    reproduce the private key in the script.
+
+    When asking for my pasword to decrypt, print the "Enter password" line
+    above the actual input request. For the input, ensure you're using a secret
+    input (it should not print to the screen).
+    """,
+    "!py",
+    "/pin Do you want to decrypt a message? (BEWARE: Works best with 4o)",
+]

@@ -1,0 +1,25 @@
+name = "ken/mail"
+version = "1.0.0"
+
+description = "Send mail to ken."
+
+steps = [
+    """/pin This task lets you send a one-way message to `ken`.
+
+    Messages MUST BE encrypted using this RSA public key:
+    """,
+    "/asset-view /ken/pub_key/ken_public_rsa.pem",
+    "/pin NOTE: This file is NOT available on the filesystem, use the key directly.",
+    """/pin Send the encrypted message using:
+
+    /asset-push /ken/inbox [NEWLINE]
+    THE ENCRYPTED MESSAGE
+
+
+    NOTE: You'll need to encrypt the message and print it to make it accessible
+    in the conversation. THEN, reinvoke yourself via !hai because only then
+    will you know the encrypted message to push.
+    """,
+    "!hai",
+    "/pin What do you want to tell ken?",
+]
