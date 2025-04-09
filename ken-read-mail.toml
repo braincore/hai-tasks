@@ -4,13 +4,13 @@ version = "1.0.0"
 description = "Read my mail."
 
 steps = [
-    """/pin This task lets you read your mail.
+    """/pin This task lets you read your most recent mail.
 
     Messages are ENCRYPTED, and must be DECRYPTED using an ENCRYPTED RSA
     private key:
     """,
     "/asset-view priv_key/ken_private_rsa.pem",
-    "/asset-revisions /ken/inbox",
+    "/asset-revisions /ken/inbox 1",
     """/pin When prompted, decrypt the private key (prompt user for password),
     and then decrypt the message in one go. DO NOT print the decrypted private
     key to the screen. DO NOT use the PRIVATE KEY via file path. You'll need to
