@@ -4,22 +4,47 @@ version = "1.0.0"
 description = "Read my mail."
 
 steps = [
-    """/pin This task lets you read your most recent mail.
+    """/pin This task lets you read your most recent mail items.
 
-    Messages are ENCRYPTED, and must be DECRYPTED using an ENCRYPTED RSA
-    private key:
+    Messages are BASE-64 and ENCRYPTED, and must be UN-BASE-64-ed and DECRYPTED
+    using an ENCRYPTED RSA private key:
     """,
-    "/asset-view priv_key/ken_private_rsa.pem",
-    "/asset-revisions /ken/inbox 1",
+    "!!cat @priv_key/ken_private_rsa.pem | head -c 42",
+    "/asset-temp priv_key/ken_private_rsa.pem",
+    "/asset-temp /ken/inbox 5",
     """/pin When prompted, decrypt the private key (prompt user for password),
     and then decrypt the message in one go. DO NOT print the decrypted private
-    key to the screen. DO NOT use the PRIVATE KEY via file path. You'll need to
-    reproduce the private key in the script.
+    key to the screen.
 
     When asking for my pasword to decrypt, print the "Enter password" line
     above the actual input request. For the input, ensure you're using a secret
     input (it should not print to the screen).
+
+    The script should look like follows:
+
+    ```
+    echo 'Enter password:'
+    read -s password
+    base64 -d ... | openssl rsautl -decrypt -inkey <(openssl rsa -in ... -passin pass:"$password")
+
+    echo 'Enter password:'
+    read -s password
+    echo '---'
+    {
+      base64 -d /tmp/asset_BBzuq37tO_YGyQ_Isv3oV | openssl pkeyutl -decrypt -inkey <(openssl rsa -in /tmp/asset_6qK7Do.pem -passin pass:"$password" 2>/dev/null) || echo 'Decryption failed for BBzuq37tO_YGyQ_Isv3oV'
+    }
+    echo '---'
+    ```
+
+    NOTE: Even if you diverge from the above script, you should ensure the
+    following:
+
+    1. DO NOT SAVE the decrypted private key anywhere on the local filesystem.
+    2. Make only ONE tool invocation. Fit it all in one shell script so that
+       the password decryption only has to happen once.
+    3. DO NOT EXIT the script if a single decode/decryption fails.
+    4. If processing multiple messages, separate each output with `--`.
     """,
-    "!py",
-    "/pin Do you want to decrypt a message? (BEWARE: Works best with 4o)",
+    "!shscript",
+    "/pin Do you want to decrypt messages? (BEWARE: Works best with 4o)",
 ]

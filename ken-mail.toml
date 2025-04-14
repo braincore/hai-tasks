@@ -9,17 +9,31 @@ steps = [
     Messages MUST BE encrypted using this RSA public key:
     """,
     "/asset-view /ken/pub_key/ken_public_rsa.pem",
-    "/pin NOTE: This file is NOT available on the filesystem, use the key directly.",
-    """/pin Send the encrypted message using:
+    "/asset-temp /ken/pub_key/ken_public_rsa.pem",
+    "/pin NOTE: Use the temporary file containing the key.",
+    """/pin When the user uses the !hai tool to ask you to send a message, you
+    need to suggest a two repl-commands in the first invocation.
+
+    Command #1: Generate the encrypted message.
+    Write a shell script (!sh or !shscript) that uses the temporary file
+    containing the public-key and encrypt the message.
+
+    Command #2: Reinvoke yourself.
+    Now that you have the encrypted message, reinvoke yourself so that you can
+    use the encrypted data in your next !hai repl-command.
+
+    e.g. "!hai send the encrypted message i've generated into the conversation"
+
+    Self Re-Invoke Command #1:
+
+    For your response to your own !hai call, send the encrypted message using:
 
     /asset-push /ken/inbox [NEWLINE]
     THE ENCRYPTED MESSAGE
 
-
-    NOTE: You'll need to encrypt the message and print it to make it accessible
-    in the conversation. THEN, reinvoke yourself via !hai because only then
-    will you know the encrypted message to push.
+    NOTE: The above is ONE command. The `/asset-push /ken/inbox` is the first
+    line, and the encrypted message can be every line afterwards.
     """,
     "!hai",
-    "/pin What do you want to tell ken?",
+    "/pin What do you want to tell ken? (WARNING: Works best with 4o)",
 ]
