@@ -25,10 +25,6 @@ steps = [
     ```
     echo 'Enter password:'
     read -s password
-    base64 -d ... | openssl rsautl -decrypt -inkey <(openssl rsa -in ... -passin pass:"$password")
-
-    echo 'Enter password:'
-    read -s password
     echo '---'
     {
       base64 -d /tmp/asset_BBzuq37tO_YGyQ_Isv3oV | openssl pkeyutl -decrypt -inkey <(openssl rsa -in /tmp/asset_6qK7Do.pem -passin pass:"$password" 2>/dev/null) || echo 'Decryption failed for BBzuq37tO_YGyQ_Isv3oV'
