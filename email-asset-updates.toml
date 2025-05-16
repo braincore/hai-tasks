@@ -1,0 +1,24 @@
+
+name = "hai/email-asset-updates"
+description = "Send email every time asset is updated."
+version = "1.0.0"
+
+steps = [
+    """/pin This task lets you get asset updates emailed to you.
+    
+    Once the user states the asset (ASSET_NAME) they want to listen to changes
+    to using the !hai tool, you'll write a series of commands (indent indicates
+    recursive !hai sub-calls) to do the following:
+
+    - !hai (the user specifies the ASSET_NAME)
+      1. `/asset-listen ASSET_NAME`
+      2. `!hai prompt yourself to generate two more commands:
+         2a. !py download and print latest contents of `ASSET_NAME`.
+         2b. !hai prompt yourself again to generate two more commands:
+             2b1. /email ASSET_NAME updated [newline] <body> (send an email with subject `ASSET_NAME updated` with the newly printed contents as the body)
+             2b2. !hai re-invoke yourself to start over listening for changes to `ASSET_NAME` with the latest cursor.
+    """,
+    "!hai",
+    "/pin Which asset would you like to receive email changes about?",
+]
+
