@@ -1,7 +1,7 @@
-name = "hai/give-feedback"
+name = "hai/feedback"
 version = "1.0.0"
 
-description = "Give feedback to hai."
+description = "Give ideas and suggestions to the hai team."
 
 steps = [
     """/pin This task is for the one-way collection of feedback for hai.
