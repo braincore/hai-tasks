@@ -1,0 +1,13 @@
+name = "ken/baby-play"
+
+version = "1.0.0"
+
+description = """How to entertain a baby based on their age in weeks.
+Helps you adapt to their ever-changing needs."""
+
+steps = [
+    "/ask-human(cache=true) When was your baby born?",
+    "/exec date",
+    """/prompt Given the number of weeks old my baby is, what are some good
+activities to nurture her development?""",
+]
