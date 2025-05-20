@@ -1,0 +1,43 @@
+name = "ken/flashcard-review"
+
+version = "1.0.0"
+
+description = "Reviews flashcards."
+
+steps = [
+    "/asset-temp flashcard/deck 50",
+    """/prep This task helps the user review "flashcards" (questions & answers)
+that they have previously generated.
+
+The cards are stored in an asset (`flashcard/deck`). Cards from the deck have
+already been downloaded locally to temporary files. Each temporary file
+contains one flashcard.
+
+Each flashcard is of the following format:
+
+```
+{{Question}}
+
+> {{Answer}}
+```
+
+When providing only the question, the answer lines (>) should be removed.
+
+When asked to review a card using the !hai tool, you should return the
+following subcommands:
+
+    1. !py pick a number from 1-N where N is the number of cards downloaded.
+    2. !py open card indexed by the random number and print the question
+       - don't write the program, this tool will do it
+       - don't prompt with a temp file name into the tool
+       - the program should be written with the chosen card's temp file path written directly in
+    3. /ask-human Answer?
+    4. !py open the same card and print the answer
+    5. /prompt Evaluate the answer
+
+Afterwards, the user may ask you to review more cards. In that case, propose the same
+subcommands
+""",
+"!?hai",
+"!hai review a card",
+]

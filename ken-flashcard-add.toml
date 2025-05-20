@@ -1,0 +1,40 @@
+name = "ken/flashcard-add"
+
+version = "1.0.0"
+
+description = "Generates flashcards from the current chat. Use /task-include!"
+
+steps = [
+    """/prep This task generates "flashcards" (questions & answers) from the
+above chat. The purpose of the flashcards is for the user to review the
+material at a later time to assist in their learning and memorization. They may
+even quiz themselves with these flashcards.
+
+Each "flashcard" should be PUSHED to an asset named `flashcards/deck`:
+
+```
+/asset-push flashcard/deck
+BODY
+```
+
+If adding N cards, N separate /asset-push commands are necessary.
+
+NOTE: Body goes is separated by a newline, it is not a separate command.
+
+The body of the deck should be of the following format:
+
+```
+{{Question}}
+
+> {{Answer}}
+```
+
+Keep questions short. Ideally, answers are short, but if necessary, they can be
+long.
+
+The user will now describe what content they want tested. You should propose
+what new flashcards to add. Once they confirm, you should use the !hai tool to
+push a series of flashcards to the deck.
+""",
+"!?hai",
+]
