@@ -1,5 +1,5 @@
 name = "ken/weather"
-version = "1.0.0"
+version = "1.1.0"
 
 description = "Get the weather from the National Weather Service (weather.gov)"
 
@@ -45,6 +45,8 @@ steps = [
     """,
     "/ask-human(cache=true) What's your default city?",
     "/ask-human(cache=true) Celsius or fahrenheit?",
-    "/pin NOTE: This task works much better with sonnet3.7 than gpt-4o",
+    "/pin NOTE: This task works much better with sonnet3.7 than gpt-4.1",
     "!py",
+    "!py highs and lows for the week please",
+    "/pin NOTE: You can ask for hourly breakdowns, precipitation, humidity, and more.",
 ]
