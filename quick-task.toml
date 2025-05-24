@@ -1,0 +1,153 @@
+name = "hai/quick-task"
+version = "1.0.0"
+
+description = "Help quickly make a hai task definition."
+
+steps = [
+    """/prep You're tasked with helping the user generate a task definition
+file. Rather than write it to a file, you'll simply print it in the conversation.
+
+If there is an existing conversation before these task-creation instructions,
+assume the user wants to create a task that replicates the resources they've
+loaded:
+
+    - files: /load <path> | /l <path>
+      - See BEGIN_FILE markers
+    - assets: /asset-load <asset_name>
+      - See BEGIN_ASSET/END_URL markers
+    - urls: /load-url <url>
+      - See BEGIN_URL/END_URL markers
+
+Assume their motivation is that they want to create a task that makes it easy
+to reset the conversation history and ask new questions about the same
+resources.
+
+If there isn't an existing conversation, then ask the user for information
+about the task they're creating.
+""",
+    """/prep A *task* in hai is a prompt-on-steroids that can be:
+
+1. Published publicly: `/task-publish <path>`
+2. Executed by anyone easily: `/task <username>/<task_name>`
+3. Or, executed from a local file: `/task <path>`
+
+A *task* is made up of steps: a sequence of repl-commands. The commands are the
+same as the ones you use. A step can:
+
+- Provide context
+- Load resources (file, image, asset, URL)
+- Execute local commands
+- Prompt the user with a question
+- Prompt the AI
+- Cache local commands, prompt responses, and answers-to-questions.
+
+Tasks make sharing workflows easy and improve their reproducibility given the
+non-deterministic nature of LLMs.
+
+## Task creation & publishing
+
+Tasks are defined in toml. For example, here's the `ken/pelican-bicycle` task
+defined in a file on my machine called `pelican-bicycle.toml`.
+
+```toml
+name = "ken/pelican-bicycle"
+version = "2.0.0"
+
+description = "Runs simonw's \"Pelicans on a bicycle\" test"
+
+steps = [
+    \"""/pin The test is simple: Ask an AI to draw a pelican on a bicycle.
+
+    https://github.com/simonw/pelican-bicycle
+    \""",
+    "/pin Checking what image tools you have",
+    "/exec cairosvg --version",
+    "/exec convert -version",
+    "!shscript Generate an SVG of a pelican riding a bicycle and pipe it into `cairosvg` or `convert` and output a png named `pelican-bicycle.png`",
+    "/load pelican-bicycle.png",
+    "/prompt Describe this image in one sentence."
+]
+```
+
+- `name` - This must be your username followed by the name of your task. All
+  tasks are namespaced by a username to avoid duplicates and confusion.
+- `version` - Must be a [semantic version](https://semver.org/) (semver).
+- `description` - Explain what the task is for. Helps for task search.
+- `unlisted` - Hides the task from search and your /whois profile.
+- `steps` - Every step is something you could have typed yourself into the CLI.
+  At the conclusion of the steps, the user takes over with the context fully
+  populated.
+
+You can test your task by referencing it by file path. To avoid ambiguity with
+tasks in the repo, the file path must begin with `./`, `/`, or `~`:
+
+```
+/task ./path/to/pelican-bicycle.toml
+```
+
+When your task is ready to publish, run:
+
+```
+/task-publish ./path/to/pelican-bicycle.toml
+```
+
+The version must be greater than the latest currently in the repo.
+
+Anyone can run your task by using its `name`:
+
+```
+/task ken/pelican-bicycle
+```
+
+## Task-specific commands
+
+There are some `hai`-repl commands that are specifically made for tasks:
+
+- `/ask-human <prompt>` - Ask the question.
+- `/ask-human(secret=true) <prompt>` - User's answer is treated as a secret and
+  hidden.
+- `/ask-human(cache=true) <prompt>` - When a user runs the task again, their
+  previous answer is used. `/task-forget` to reset.
+
+- `/set-mask-secrets on` - AI output that includes the secret is masked in the
+  terminal.
+  - An example use case is asking the user for their API token to a service.
+    With masking, the AI can use the token in its tool-invocations and it'll
+    show as masked `*******` in the terminal.
+
+- `/exec <cmd>` - Execute a command on the local machine. The user is always
+  prompted yes/no.
+- `/exec(cache=true) <cmd>` - When a user runs the task again, the output from
+  the previous invocation is used.
+  - An example use of `/exec` is to make the first task command
+    `/exec(cache=true) ffmpeg -version` so that the AI knows to tweak its
+    `fmpeg` command-line with the exact version in mind.
+
+- `/prompt <message>` - Makes it explicit that the line is prompting the AI.
+- `/prompt(cache=true) <message>` - When a user runs the task again, the AI
+  output from the previous invocation is used instead of re-prompting.
+  - The cache is useful for avoiding the delay of an AI response and reducing
+    costs for expensive prompts.
+
+- `/task-include <name|path>` - Rather than clearing the conversation and
+  entering a new task-mode, this command injects tasks commands into the current
+  conversation. If you find yourself giving the same instructions to the AI
+  over-and-over again, just make a (pseudo-)task with your instructions and
+  include it any time even if you're in another task-mode. For example, I have a
+  `ken/be-terse` task and `ken/code-preference` task that I inject as necessary.
+
+- `/ai <model>` - While this isn't a task-only command, its behavior is subtly
+  different. In a task step, if the user doesn't have hai-router or an API key
+  set for the requested model, the current model isn't changed. This means a
+  task author can use `/ai <model>` without fearing that a task will try to use
+  a model without a key set.
+""",
+    "/prep Fulle list of commands available in REPL:",
+    "/help(history=true)",
+    """/prompt Help me make a task. If there was a conversation prior to these
+instructions on creating a task definition, list all the resource-load commands
+in the conversation. BE VERY THOROUGH. If none, ask what resources I want
+loaded.
+""",
+]
+
