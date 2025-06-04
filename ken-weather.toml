@@ -1,5 +1,5 @@
 name = "ken/weather"
-version = "1.1.0"
+version = "1.2.0"
 
 description = "Get the weather from the National Weather Service (weather.gov)"
 
@@ -45,8 +45,11 @@ steps = [
     """,
     "/ask-human(cache=true) What's your default city?",
     "/ask-human(cache=true) Celsius or fahrenheit?",
-    "/pin NOTE: This task works much better with sonnet3.7 than gpt-4.1",
-    "!py",
-    "!py highs and lows for the week please",
-    "/pin NOTE: You can ask for hourly breakdowns, precipitation, humidity, and more.",
+    "/pin NOTE: This task works well with gpt-4.1",
+    """!fn-py(cache=true) Define a function `f` that prints highs, lows,
+precipitation, and humidity for the week in a table. Do not use the input `arg`
+and give it a default of None. Avoid using the `requests` library by
+defaulting to the stdlib. Return None. No test invocation.""",
+    "/f0",
 ]
+
