@@ -1,0 +1,44 @@
+name = "ken/music-player"
+version = "1.0.0"
+
+description = "Load music assets. Plays random songs while printing synchronized lyrics."
+
+# Assumes your music collection is composed of *.mp3 assets in `music/`.
+# Assumes song asset metadata has an `lrc` key set with `lrc` as text.
+# I use Spotify Downloader: https://github.com/spotDL/spotify-downloader:
+#
+# $ spotdl <url> --lyrics synced --generate-lrc
+#
+# This grabs both the lyrics and the lrc and I use `hai` to add the lrc text
+# to asset metadata.
+
+steps = [
+    # Sync mp3 files for 1. Faster playback 2. E-z access to lyrics in metadata
+    "/asset-sync-down music .",
+
+    # Define the random song picker function
+    "!fn-py(cache=true) Define a function that takes the number of songs N and randomly chooses a number in [0, N).",
+
+    # Define the play-with-lyrics function
+    """!fn-py(cache=true) Define a function that takes in an mp3 file path. It should open and play the song using `mpg123`.
+
+Simultaneously, it should try to open a similar path with `.metadata` appended. This file contains a JSON object which you should deserialize. It may have an `lrc` key which contains string-value of timestamped lyrics (one per line: [mm:ss.xx] lyric). Print each line (be sure to flush using sys.stdout.flush()) at the correct timestamp. Sleep in between. If a SPACE key is detected as input, the program/function should end.""",
+
+    "!!ls music",
+
+    # Make tool optional because sometimes I stop the player to ask questions
+    # about the song/album/band and then ask the AI to resume playing.
+    "!?hai",
+
+    # TODO: Figure out a better way to handle this. Using /forget is possible,
+    # but I found it unreliable as history growth was inconsistent when
+    # song interruptions occurred.
+    "/pin This task plays 3 songs before ending. It does not play more to avoid building an unbounded history",
+
+    """!hai Play a random song and then re-invoke yourself to play the next. You should return two commands:
+    1. /f0 <Number of songs>
+    2. !hai Instruct yourself to play the song indexed by the random number. Return two commands:
+      2.1 /f1 "<Song file path>"
+          - don't forget to quote the path since it's a JSON-string argument.
+      2.2 !hai Re-invoke yourself with these same instructions to play the next song UNLESS 3 songs have already played (/f1 invocations)"""
+]
