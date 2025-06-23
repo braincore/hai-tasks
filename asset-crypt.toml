@@ -1,0 +1,92 @@
+name = "ken/asset-crypt"
+
+version = "1.0.0"
+
+description = "For storing & retrieving encrypted assets."
+
+steps = [
+    """/pin Uses hybrid encryption to encrypt assets.
+
+Each asset is encrypted using a different AES-256 key. The AES-256 key is
+encrypted using the user's RSA public key and stored in the asset's metadata.
+    """,
+    """!fn-py(cache=true) Define a function that encrypts a local file using a randomly generated AES-256 key:
+
+    arg: tuple[str, str]
+
+    - The 0th element is the path to the public RSA key.
+    - The 1st element is the path to the local file to encrypt.
+
+    The function should do the following:
+    - Randomly generate a new AES-256 key.
+    - Use that key to encrypt the local file and output the new file to the tmp directory.
+    - Print the path to the encrypted file.
+    - Encrypt the AES-256 key using the public key.
+    - Print the encrypted AES-256 key in base64.
+    """,
+    """/pin When the user asks you to encrypt a file with the !hai tool, you should
+return the following sub-commands (NOTE: Step #2 is expected to use !hai which will
+return its own set of sub-commands):
+
+    1. /f0 ("<public_rsa_key_path>", "<file_path_to_encrypt>")
+    2. !hai Upload the encrypted file, set metadata, and clean up based on result from /f0.
+       2.1. /asset-import <user_specified_asset_key> <encrypted_file_path_in_tmp>
+       2.2. /asset-md-set-key <user_specified_asset_name> enc_aes256_key "<encrypted AES-256 key in base64>"
+       2.3. /asset-md-set-key <user_specified_asset_name> pub_key "<asset_name_for_pub_key>"
+       2.4. Remove temp files
+    """,
+    """!fn-py(cache=true) Define a function that decrypts a local file and outputs a file to a permanent location:
+
+    arg: tuple[str, str, str, str]
+
+    - The 0th element is the path to the private RSA key.
+    - The 1st element is the path to the local temp file for the asset to decrypt.
+    - The 2nd element is the path to the local temp file for the asset's JSON metadata.
+        - Load the JSON object and use the "enc_aes256_key" which contains the base64 encrypted AES-256 key.
+    - The 3rd element is the target path to save the decrypted file.
+
+    The function should do the following:
+    - Ask for password to private RSA key if necessary (support password-protected and not).
+    - Load the asset's JSON metadata and extract value of `enc_aes256_key`.
+    - base64-decode the encrypted AES-256 key and then decrypt it using the private RSA key.
+    - Use the AES-256 key to decrypt the local file.
+    - Save the decrypted file to the output path.
+      - You should support tilde expansion for the output path.
+    - Remove any temporary files created by this function, if applicable.
+    - Print the output path if successful, otherwise, print an error.
+    """,
+    """/pin When the user asks you to decrypt a file with the !hai tool, you should
+return the following sub-commands (NOTE: Step #2 is expected to use !hai which will
+return its own set of sub-commands):
+
+    1. /asset-temp <asset_name_to_decrypt>
+    2. !hai Use /f1 to decrypt and save the asset to a file using the conversation so far to populate args to /f1.
+       2.1 /f1 ("<private_rsa_key_path>", "<path_to_file_to_decrypt>", "<base64_encrypted_aes256_from_metadata>", "<output_path>")
+    """,
+    """/pin Your keys are being stored temporarily on your machine for the
+    AI to use in functions without having to include them directly in the conversation.""",
+    "/asset-temp //pubkey/public_rsa.pem",
+    "/asset-temp privkey/private_rsa.pem",
+    """/pin The private RSA key is encrypted.
+Prompt the user for their password when required.
+    """,
+    """/pin NOTES FOR USER:
+
+1. Task assumes you have an RSA public/private key pair stored as assets.
+  - Public key: /<username>/pubkey/public_rsa.pem
+  - Private key: privkey/private_rsa.pem
+  - If not, use task `hai/keypair-setup`
+
+2. The generated Python functions likely need a crypto library. You will need
+  to ensure your Python environment has these available, preferably by setting
+  up a virtual environment.
+    """,
+    """/pin Let me know what you'd like to do:
+
+- Encrypt: What local file would you like to encrypt and store as what asset name?
+           Use !!ls to look around your filesystem
+- Decrypt: What asset-name would you like to decrypt and save as what file path?
+""",
+    "!hai?",
+]
+
