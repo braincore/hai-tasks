@@ -1,0 +1,41 @@
+name = "ken/task-safety-checker"
+version = "1.0.0"
+
+description = "Review other tasks for safety concerns"
+
+steps = [
+    "/pin This task will help you review another task for safety concerns.",
+    "/ask-human Which task would you like to review for safety?",
+    "!hai Load the task with /task-view",
+    """/prompt Identify all potentially unsafe steps in the task:
+
+- Destructive commands (Examples below)
+  - File deletion: `/exec rm ...` or `!!rm ...`
+  - Asset deletion: `/asset-remove ...`
+- Unknown files and assets that are used in potentially dangerous ways
+  - File downloaded and then executed: `!!wget ... -o script.py`, `!!python script.py`
+  - Asset downloaded and then executed: `/asset-export ...`, `!!python ...`o
+- Destructive tool use
+  - These ask the AI to generate potentially dangerous programs and commands
+  - "!sh delete home dir", "!py delete my documents"
+
+Any other potential risks or things the user should be aware of.
+
+Output a table of each step that is potentially dangerous and why.
+""",
+    """!hai Review the next step from the table that hasn't been reviewed (starting from the top).
+
+You should return a list of commands like so:
+
+1*. Load any opaque resources from that step into the conversation for review.
+   - e.g. /exec curl <opaque url being used by task step>
+   - e.g. /asset-view <opaque asset being used by the task step>
+2. /prompt Review the loaded resources
+3. !hai Prompt yourself to review the next task step.
+
+* may require multiple commands to load all resources
+Step #2 is only necessary if resources were loaded for further review.
+Step #3 is only necessary if there is a task step that hasn't been reviewed.
+""",
+    "Provide a summary of your findings and recommendations for the user.",
+]
