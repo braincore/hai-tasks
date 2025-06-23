@@ -1,7 +1,7 @@
 
 name = "hai/email-asset-updates"
 description = "Send email every time asset is updated."
-version = "1.0.0"
+version = "1.1.0"
 
 steps = [
     """/pin This task lets you get asset updates emailed to you.
@@ -16,7 +16,9 @@ steps = [
          2a. !py download and print latest contents of `ASSET_NAME`.
          2b. !hai prompt yourself again to generate two more commands:
              2b1. /email ASSET_NAME updated [newline] <body> (send an email with subject `ASSET_NAME updated` with the newly printed contents as the body)
-             2b2. !hai re-invoke yourself to start over listening for changes to `ASSET_NAME` with the latest cursor.
+             2b2. /keep 10 3
+                  - helps manage the size of the conversation in the event there are lots of asset updates.
+             2b3. !hai re-invoke yourself to start over listening for changes to `ASSET_NAME` with the latest cursor.
     """,
     "!hai",
     "/pin Which asset would you like to receive email changes about?",
