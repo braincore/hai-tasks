@@ -1,0 +1,41 @@
+name = "hai/keypair-setup"
+
+version = "1.0.0"
+
+description = "Generates an RSA keypair stored in assets."
+
+steps = [
+    """/pin To experiment with encrypting assets, this task generates an RSA
+keypair stored with standardized asset names for easy discovery:
+
+- Public key: /<username>/pubkey/public_rsa.pem
+- Private key: privkey/private_rsa.pem
+
+If a keypair already exists, this task will fail to create one to avoid
+losing access to encryption that used your old keys. You'll need to manually
+remove them with `/asset-remove`.
+
+The following /asset-list calls check if the public and private keys exist.
+If there's no response to the command, then the assets do not exist.
+""",
+    "/asset-list //pubkey/public_rsa.pem",
+    "/asset-list privkey/private_rsa.pem",
+    """!hai? if public or private key already exist, call /task-end.
+Otherwise, do not initiate /asset-view or /asset-list calls. No-op by ignoring
+this tool or returning an empty list of sub commands.""",
+    """!shscript Generate a 2048-bit RSA keypair. Separate the pair into two
+temp files: /tmp/public_rsa.pem and /tmp/private_rsa.pem. Make the private key
+password protected. Prompt the user for the password and have them retype it to
+verify its correctness. Since stdout is a pipe (not terminal), don't use `-p`
+in `read -s -p ...`. Instead, `echo` messages before calling `read -s`.
+""",
+    """!hai Upload both keys.
+    - /asset-import //pubkey/public_rsa.pem /tmp/public_rsa.pem
+    - /asset-md-set-key //pubkey/public_rsa.pem title "Public 2048-bit RSA key PEM-encoded"
+    - /asset-import privkey/private_rsa.pem /tmp/private_rsa.pem
+    - /asset-md-set-key privkey/private_rsa.pem title "Private 2048-bit RSA key (Public: <asset_name_of_public_key>)"
+      - For the <asset_name_of_public_key> be sure to use the version that includes the user's username.
+    - /exec rm <temporary public_rsa.pem file>
+    - /exec rm <temporary private_rsa.pem file>
+    """,
+]
