@@ -1,0 +1,30 @@
+name = "ken/code-review"
+version = "1.0.0"
+
+description = "Get a shallow code review from the AI/LLM."
+
+steps = [
+    """/pin AI: When reviewing the code diff, please do the following:
+
+- Look for tasks or TODOs that haven't been completed.
+- Check for misspellings or unclear language in documentation or comments.
+- Note if there are missing or insufficient tests for new or changed code.
+- Point out any bugs, logic errors, or code smells.
+- Suggest improvements for readability or maintainability if appropriate.
+
+Keep your feedback clear and actionable.
+""",
+    """/pin To get your code diff into the chat, run one of the following
+commands depending on your needs:
+
+- `!!git diff` — for unstaged changes
+- `!!git diff --staged` — for staged changes
+- `!!git diff HEAD` — for all changes since your last commit
+- `!!git diff <commit>` — for changes since a specific commit
+- `!!git show <commit>` - for changes in a specific commit
+- `!sh <prompt>` - let the AI figure out how to get the change into the chat
+
+Once the diff is loaded, you can simply ask for a "review" or provide more
+context.
+""",
+]
