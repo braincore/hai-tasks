@@ -1,5 +1,5 @@
 name = "hai/api"
-version = "1.0.0"
+version = "1.1.0"
 
 description = "Query the hai api"
 
@@ -41,7 +41,7 @@ steps = [
     "/pin If you need an API token, use `/task hai/get-api-token`",
     "/ask-human(secret=true, cache=true) What's your API token?",
 
-    "!sh",
+    "!sh?",
 
     "/pin BEWARE: Queries are somewhat expensive given the large amounts of API context.",
     "/cost",
