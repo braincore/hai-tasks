@@ -1,8 +1,12 @@
 name = "ken/asset-crypt"
 
-version = "1.0.0"
+version = "1.2.0"
 
 description = "For storing & retrieving encrypted assets."
+
+dependencies = [
+    "hai >= 1.18.0",
+]
 
 steps = [
     """/pin Uses hybrid encryption to encrypt assets.
@@ -10,7 +14,9 @@ steps = [
 Each asset is encrypted using a different AES-256 key. The AES-256 key is
 encrypted using the user's RSA public key and stored in the asset's metadata.
     """,
-    """!fn-py(cache=true) Define a function that encrypts a local file using a randomly generated AES-256 key:
+    "/pin(warn) Switching to sonnet-4 as it is most reliable for defining fns",
+    "/ai sonnet4",
+    """!fn-pyuv(name="encrypt", cache) Define a function that encrypts a local file using a randomly generated AES-256 key:
 
     arg: tuple[str, str]
 
@@ -28,14 +34,14 @@ encrypted using the user's RSA public key and stored in the asset's metadata.
 return the following sub-commands (NOTE: Step #2 is expected to use !hai which will
 return its own set of sub-commands):
 
-    1. /f0 ("<public_rsa_key_path>", "<file_path_to_encrypt>")
-    2. !hai Upload the encrypted file, set metadata, and clean up based on result from /f0.
+    1. /f_encrypt ("<public_rsa_key_path>", "<file_path_to_encrypt>")
+    2. !hai Upload the encrypted file, set metadata, and clean up based on result from /f_encrypt.
        2.1. /asset-import <user_specified_asset_key> <encrypted_file_path_in_tmp>
        2.2. /asset-md-set-key <user_specified_asset_name> enc_aes256_key "<encrypted AES-256 key in base64>"
        2.3. /asset-md-set-key <user_specified_asset_name> pub_key "<asset_name_for_pub_key>"
        2.4. Remove temp files
     """,
-    """!fn-py(cache=true) Define a function that decrypts a local file and outputs a file to a permanent location:
+    """!fn-pyuv(name="decrypt", cache) Define a function that decrypts a local file and outputs a file to a permanent location:
 
     arg: tuple[str, str, str, str]
 
@@ -60,8 +66,8 @@ return the following sub-commands (NOTE: Step #2 is expected to use !hai which w
 return its own set of sub-commands):
 
     1. /asset-temp <asset_name_to_decrypt>
-    2. !hai Use /f1 to decrypt and save the asset to a file using the conversation so far to populate args to /f1.
-       2.1 /f1 ("<private_rsa_key_path>", "<path_to_file_to_decrypt>", "<base64_encrypted_aes256_from_metadata>", "<output_path>")
+    2. !hai Use /f_decrypt to decrypt and save the asset to a file using the conversation so far to populate args to /f_decrypt.
+       2.1 /f_decrypt ("<private_rsa_key_path>", "<path_to_file_to_decrypt>", "<base64_encrypted_aes256_from_metadata>", "<output_path>")
     """,
     """/pin Your keys are being stored temporarily on your machine for the
     AI to use in functions without having to include them directly in the conversation.""",
@@ -70,18 +76,13 @@ return its own set of sub-commands):
     """/pin The private RSA key is encrypted.
 Prompt the user for their password when required.
     """,
-    """/pin NOTES FOR USER:
+    """/pin(warn) You must have an RSA public/private key pair stored as assets.
 
-1. Task assumes you have an RSA public/private key pair stored as assets.
-  - Public key: /<username>/pubkey/public_rsa.pem
-  - Private key: privkey/private_rsa.pem
-  - If not, use task `hai/keypair-setup`
-
-2. The generated Python functions likely need a crypto library. You will need
-  to ensure your Python environment has these available, preferably by setting
-  up a virtual environment.
-    """,
-    """/pin Let me know what you'd like to do:
+- Public key: /<username>/pubkey/public_rsa.pem
+- Private key: privkey/private_rsa.pem
+- If not, use task `hai/keypair-setup`
+""",
+    """/pin(info) Let me know what you'd like to do:
 
 - Encrypt: What local file would you like to encrypt and store as what asset name?
            Use !!ls to look around your filesystem
